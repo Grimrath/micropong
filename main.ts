@@ -364,6 +364,21 @@ radio.onReceivedValue(function (name, value) {
         }
     }
 })
+function call_you_are_ready () {
+    basic.showIcon(IconNames.No)
+    if (READY == true) {
+        basic.showIcon(IconNames.Yes)
+        basic.showNumber(3)
+        basic.pause(1000)
+        basic.showNumber(2)
+        basic.pause(1000)
+        basic.showNumber(1)
+        basic.pause(1000)
+        basic.showString("Go!")
+    }
+    make_Ready()
+    mode = 2
+}
 function sort_coords_into_quadrants (list_of_coords: number[][]) {
     tmp_quadrant_one_coordinates = [convertToText(display_1)]
     tmp_quadrant_two_coordinates = [convertToText(display_2)]
@@ -471,7 +486,6 @@ function make_Ready () {
         START = false
     }
 }
-let READY = false
 let START = false
 let next_y = 0
 let next_x = 0
@@ -479,6 +493,7 @@ let tmp_quadrant_four_coordinates: string[] = []
 let tmp_quadrant_three_coordinates: string[] = []
 let tmp_quadrant_two_coordinates: string[] = []
 let tmp_quadrant_one_coordinates: string[] = []
+let READY = false
 let tmp_return_list_1: string[] = []
 let tmp_string_1 = ""
 let string = ""
