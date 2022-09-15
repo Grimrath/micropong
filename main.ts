@@ -1,14 +1,12 @@
 function Sandstorm () {
-    for (let index = 0; index < 8; index++) {
-        music.playMelody("E - E E E - E - ", 680)
-        music.playMelody("E - E E E - E - ", 680)
-        music.playMelody("A - A A A - A - ", 680)
-        music.playMelody("G - G - G - D - ", 680)
-        music.playMelody("E - E E E - E - ", 680)
-        music.playMelody("E - E E E - A - ", 680)
-        music.playMelody("E - E E E - E - ", 680)
-        music.playMelody("E - E E E - E - ", 680)
-    }
+    music.playMelody("E - E E E - E - ", 680)
+    music.playMelody("E - E E E - E - ", 680)
+    music.playMelody("A - A A A - A - ", 680)
+    music.playMelody("G - G - G - D - ", 680)
+    music.playMelody("E - E E E - E - ", 680)
+    music.playMelody("E - E E E - A - ", 680)
+    music.playMelody("E - E E E - E - ", 680)
+    music.playMelody("E - E E E - E - ", 680)
 }
 function plot_LEDs (list_of_coords: string[]) {
     basic.clearScreen()
@@ -265,6 +263,9 @@ make_paddle_top()
 make_ball()
 let intervallen = 1000
 update_displays()
+loops.everyInterval(500, function () {
+    Sandstorm()
+})
 basic.forever(function () {
     basic.pause(intervallen)
     move_ball()
