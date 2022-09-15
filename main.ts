@@ -66,6 +66,23 @@ function move_paddle_top (num: number) {
         update_displays()
     }
 }
+function ready_player_one () {
+    if (mode == 1) {
+        basic.showIcon(IconNames.No)
+    }
+    if (READY == true) {
+        basic.showIcon(IconNames.Yes)
+        basic.pause(1000)
+        basic.showNumber(3)
+        basic.pause(1000)
+        basic.showNumber(2)
+        basic.pause(1000)
+        basic.showNumber(1)
+        basic.pause(1000)
+        basic.showString("GO!")
+        mode = 2
+    }
+}
 function collect_position_coordinates () {
     tmp_list_of_coords = [
     [ball_pos_x, ball_pos_y],
@@ -78,6 +95,32 @@ function collect_position_coordinates () {
     ]
     return tmp_list_of_coords
 }
+function visual_player_1_goalscored_on () {
+    if (mode == 3) {
+        music.playMelody("C D E F G A B C5 ", 240)
+        for (let index = 0; index < 2; index++) {
+            basic.showIcon(IconNames.Square)
+            basic.showIcon(IconNames.SmallSquare)
+            basic.showIcon(IconNames.SmallDiamond)
+            basic.showLeds(`
+                . . . . .
+                . . . . .
+                . . # . .
+                . . . . .
+                . . . . .
+                `)
+            basic.showIcon(IconNames.SmallDiamond)
+            basic.showIcon(IconNames.SmallSquare)
+        }
+        mode = 2
+    }
+}
+input.onButtonPressed(Button.AB, function () {
+    if (START == true) {
+        READY = true
+        START = false
+    }
+})
 // LED on/off commands
 radio.onReceivedString(function (receivedString) {
     if (parseFloat(receivedString.substr(0, 1)) == my_id) {
@@ -236,6 +279,7 @@ let string = ""
 let tmp_coords_as_string = ""
 let bottom_paddle_pos_y = 0
 let tmp_list_of_coords: number[][] = []
+let READY = false
 let ball_v_y = 0
 let ball_v_x = 0
 let ball_pos_y = 0
@@ -247,9 +291,12 @@ let top_paddle_left_pos_x = 0
 let bottom_paddle_right_pos_x = 0
 let bottom_paddle_mid_pos_x = 0
 let bottom_paddle_left_pos_x = 0
+let START = false
 let my_id = 0
 let ycoordinate = 0
 let xcoordinate = 0
+let mode = 0
+mode = 1
 // index of x-coordinate in list
 xcoordinate = 0
 // index of y-coordinate in list
@@ -263,6 +310,7 @@ make_paddle_top()
 make_ball()
 let intervallen = 1000
 update_displays()
+START = true
 loops.everyInterval(500, function () {
     Sandstorm()
 })
