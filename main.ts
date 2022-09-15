@@ -10,17 +10,50 @@ function Sandstorm () {
         music.playMelody("E - E E E - E - ", 680)
     }
 }
+function init_misc () {
+    // index of x-coordinate in list
+    xcoordinate = 0
+    // index of y-coordinate in list
+    ycoordinate = 1
+    // Used to trick functions to know that it is an array of arrays of numbers
+    arrayofarraysofnumbers = [[0, 0]]
+}
 function plot_LEDs (list_of_coords: string[]) {
     basic.clearScreen()
     for (let value of list_of_coords) {
         led.plot(parseFloat(value.split(",")[0]), parseFloat(value.split(",")[1]))
     }
 }
+radio.onReceivedNumber(function (receivedNumber) {
+    if (mode == pairing) {
+        next_available_id = receivedNumber
+        if (next_available_id > player_2) {
+            mode = ingame
+        } else {
+        	
+        }
+    }
+})
 function move_paddle_bottom (num: number) {
     bottom_paddle_left_pos_x = bottom_paddle_left_pos_x + num
     bottom_paddle_mid_pos_x = bottom_paddle_mid_pos_x + num
     bottom_paddle_right_pos_x = bottom_paddle_right_pos_x + num
     update_displays()
+}
+function init_ids () {
+    next_available_id = 1
+    player_1_master = 5
+    player_2 = 6
+    display_1 = 1
+    display_2 = 2
+    display_3 = 3
+    display_4 = 4
+}
+function init_modes () {
+    pairing = 0
+    intro = 1
+    ingame = 2
+    goal = 3
 }
 function make_paddle_top () {
     top_paddle_left_pos_x = 1
@@ -29,8 +62,13 @@ function make_paddle_top () {
     top_paddle_pos_y = 0
 }
 input.onButtonPressed(Button.A, function () {
-    move_paddle_bottom(-1)
-    move_paddle_top(-1)
+    if (mode == ingame) {
+        if (my_id == player_1_master) {
+            move_paddle_top(-1)
+        } else if (my_id == player_2) {
+            radio.sendValue("bottom", -1)
+        }
+    }
 })
 function make_ball () {
     ball_pos_x = 2
@@ -56,16 +94,36 @@ function collect_position_coordinates () {
     ]
     return tmp_list_of_coords
 }
+function init_game_state () {
+    intervallen = 1000
+    make_paddle_bottom()
+    make_paddle_top()
+    make_ball()
+}
+input.onButtonPressed(Button.AB, function () {
+    if (mode == pairing) {
+        my_id = next_available_id
+        basic.showNumber(my_id)
+        radio.sendNumber(next_available_id + 1)
+    }
+})
 // LED on/off commands
 radio.onReceivedString(function (receivedString) {
-    if (parseFloat(receivedString.substr(0, 1)) == my_id) {
-        tmp_coords_as_string = receivedString.substr(1, receivedString.length - 1)
-        plot_LEDs(string_to_list(tmp_coords_as_string))
+    if (my_id >= display_1 && my_id <= display_4) {
+        if (parseFloat(receivedString.substr(0, 1)) == my_id) {
+            tmp_coords_as_string = receivedString.substr(1, receivedString.length - 1)
+            plot_LEDs(string_to_list(tmp_coords_as_string))
+        }
     }
 })
 input.onButtonPressed(Button.B, function () {
-    move_paddle_top(1)
-    move_paddle_bottom(1)
+    if (mode == ingame) {
+        if (my_id == player_1_master) {
+            move_paddle_top(1)
+        } else if (my_id == player_2) {
+            radio.sendValue("bottom", 1)
+        }
+    }
 })
 input.onGesture(Gesture.Shake, function () {
     intervallen += -25
@@ -94,10 +152,12 @@ function string_to_list (message_as_text: string) {
 }
 // Paddle movement commands
 radio.onReceivedValue(function (name, value) {
-    if (name == "top") {
-        move_paddle_top(value)
-    } else if (name == "bottom") {
-        move_paddle_bottom(value)
+    if (mode == ingame && my_id == player_1_master) {
+        if (name == "top") {
+            move_paddle_top(value)
+        } else if (name == "bottom") {
+            move_paddle_bottom(value)
+        }
     }
 })
 function sort_coords_into_quadrants (list_of_coords: number[][]) {
@@ -212,6 +272,7 @@ let tmp_return_list_1: string[] = []
 let tmp_string_1 = ""
 let string = ""
 let tmp_coords_as_string = ""
+let intervallen = 0
 let bottom_paddle_pos_y = 0
 let tmp_list_of_coords: number[][] = []
 let ball_v_y = 0
@@ -222,26 +283,37 @@ let top_paddle_pos_y = 0
 let top_paddle_right_pos_x = 0
 let top_paddle_mid_pos_x = 0
 let top_paddle_left_pos_x = 0
+let goal = 0
+let intro = 0
+let display_4 = 0
+let display_3 = 0
+let display_2 = 0
+let display_1 = 0
+let player_1_master = 0
 let bottom_paddle_right_pos_x = 0
 let bottom_paddle_mid_pos_x = 0
 let bottom_paddle_left_pos_x = 0
-let my_id = 0
+let ingame = 0
+let player_2 = 0
+let next_available_id = 0
+let arrayofarraysofnumbers: number[][] = []
 let ycoordinate = 0
 let xcoordinate = 0
-// index of x-coordinate in list
-xcoordinate = 0
-// index of y-coordinate in list
-ycoordinate = 1
-my_id = 0
+let pairing = 0
+let mode = 0
+let my_id = 0
 radio.setGroup(145)
-// Used to trick functions to know that it is an array of arrays of numbers
-let arrayofarraysofnumbers = [[0, 0]]
-make_paddle_bottom()
-make_paddle_top()
-make_ball()
-let intervallen = 1000
-update_displays()
+my_id = 0
+init_misc()
+init_ids()
+init_modes()
+init_game_state()
+mode = pairing
 basic.forever(function () {
-    basic.pause(intervallen)
-    move_ball()
+    if (my_id == player_1_master) {
+        if (mode == ingame) {
+            basic.pause(intervallen)
+            move_ball()
+        }
+    }
 })
