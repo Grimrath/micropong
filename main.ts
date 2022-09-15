@@ -163,6 +163,28 @@ function check_move () {
             ball_v_y = -1
         }
     }
+    if (next_y == 0) {
+        if (ball_pos_x == top_paddle_left_pos_x) {
+            ball_v_y = ball_v_y * -1
+            ball_v_x = ball_v_x + -1
+            next_x = ball_pos_x + ball_v_x
+            if (next_x < 0 || next_x > 9) {
+                ball_v_x = ball_v_x * -1
+            }
+        } else if (ball_pos_x == top_paddle_mid_pos_x) {
+            ball_v_y = ball_v_y * -1
+        } else if (ball_pos_x == top_paddle_right_pos_x) {
+            ball_v_y = ball_v_y * -1
+            ball_v_x = ball_v_x + 1
+            next_x = ball_pos_x + ball_v_x
+            if (next_x < 0 || next_x > 9) {
+                ball_v_x = ball_v_x * -1
+            }
+        } else if (next_x == top_paddle_left_pos_x || next_x == top_paddle_right_pos_x) {
+            ball_v_x = 0
+            ball_v_y = -1
+        }
+    }
     if (ball_pos_y == 0 || ball_pos_y == 9) {
         ball_v_y = ball_v_y * -1
     }
