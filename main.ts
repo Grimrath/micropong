@@ -17,9 +17,21 @@ function plot_LEDs (list_of_coords: string[]) {
     }
 }
 function move_paddle_bottom (num: number) {
-    bottom_paddle_left_pos_x = bottom_paddle_left_pos_x + num
-    bottom_paddle_mid_pos_x = bottom_paddle_mid_pos_x + num
-    bottom_paddle_right_pos_x = bottom_paddle_right_pos_x + num
+    if (bottom_paddle_left_pos_x < 7) {
+        if (bottom_paddle_left_pos_x > 0) {
+            bottom_paddle_left_pos_x = bottom_paddle_left_pos_x + num
+        }
+    }
+    if (bottom_paddle_mid_pos_x < 8) {
+        if (bottom_paddle_mid_pos_x > 1) {
+            bottom_paddle_mid_pos_x = bottom_paddle_mid_pos_x + num
+        }
+    }
+    if (bottom_paddle_right_pos_x < 9) {
+        if (bottom_paddle_right_pos_x > 2) {
+            bottom_paddle_right_pos_x = bottom_paddle_right_pos_x + num
+        }
+    }
     update_displays()
 }
 function make_paddle_top () {
