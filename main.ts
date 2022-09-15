@@ -82,6 +82,26 @@ input.onButtonPressed(Button.A, function () {
         }
     }
 })
+function visual_player_1_goalscored_on () {
+    if (mode == 3) {
+        music.playMelody("C D E F G A B C5 ", 240)
+        for (let index = 0; index < 2; index++) {
+            basic.showIcon(IconNames.Square)
+            basic.showIcon(IconNames.SmallSquare)
+            basic.showIcon(IconNames.SmallDiamond)
+            basic.showLeds(`
+                . . . . .
+                . . . . .
+                . . # . .
+                . . . . .
+                . . . . .
+                `)
+            basic.showIcon(IconNames.SmallDiamond)
+            basic.showIcon(IconNames.SmallSquare)
+        }
+        mode = 2
+    }
+}
 function make_ball () {
     ball_pos_x = 2
     ball_pos_y = 1
@@ -185,10 +205,10 @@ radio.onReceivedValue(function (name, value) {
     }
 })
 function sort_coords_into_quadrants (list_of_coords: number[][]) {
-    tmp_quadrant_one_coordinates = ["1"]
-    tmp_quadrant_two_coordinates = ["2"]
-    tmp_quadrant_three_coordinates = ["3"]
-    tmp_quadrant_four_coordinates = ["4"]
+    tmp_quadrant_one_coordinates = [convertToText(display_1)]
+    tmp_quadrant_two_coordinates = [convertToText(display_2)]
+    tmp_quadrant_three_coordinates = [convertToText(display_3)]
+    tmp_quadrant_four_coordinates = [convertToText(display_4)]
     for (let coords of list_of_coords) {
         if (coords[xcoordinate] <= 4) {
             // Kvadrant 2
@@ -285,6 +305,14 @@ function move_ball () {
     ball_pos_y = ball_pos_y + ball_v_y
     update_displays()
 }
+function make_Ready () {
+    if (START == true) {
+        READY = true
+        START = false
+    }
+}
+let READY = false
+let START = false
 let next_y = 0
 let next_x = 0
 let tmp_update_displays_list: string[] = []
