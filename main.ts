@@ -520,7 +520,6 @@ let xcoordinate = 0
 let pairing = 0
 let mode = 0
 let my_id = 0
-let coords_row_5: number[] = []
 radio.setGroup(145)
 my_id = 0
 init_misc()
