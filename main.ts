@@ -61,6 +61,12 @@ function init_ids () {
     display_3 = 3
     display_4 = 4
 }
+function combine_lists (list1: number[], list2: number[]) {
+    for (let value6 of list2) {
+        list1.push(value6)
+    }
+    return list1
+}
 function init_modes () {
     pairing = 0
     intro = 1
@@ -72,6 +78,160 @@ function make_paddle_top () {
     top_paddle_mid_pos_x = 2
     top_paddle_right_pos_x = 3
     top_paddle_pos_y = 0
+}
+function draw_coords (coord_list: any[]) {
+    tmp_update_displays_list = sort_coords_into_quadrants(coord_list)
+    for (let value32 of tmp_update_displays_list) {
+        radio.sendString("" + (value32))
+    }
+}
+function number_to_coords (num: number, quadrant: number, upside_down: number) {
+    if (num == 0) {
+        coords_list = [[0, 1]]
+        coords_list.push([0, 2])
+        coords_list.push([1, 0])
+        coords_list.push([1, 3])
+        coords_list.push([2, 0])
+        coords_list.push([2, 3])
+        coords_list.push([3, 0])
+        coords_list.push([3, 3])
+        coords_list.push([4, 1])
+        coords_list.push([4, 2])
+    } else if (num == 1) {
+        coords_list = [[0, 2]]
+        coords_list.push([1, 1])
+        coords_list.push([1, 2])
+        coords_list.push([2, 2])
+        coords_list.push([3, 2])
+        coords_list.push([4, 1])
+        coords_list.push([4, 2])
+        coords_list.push([4, 3])
+    } else if (num == 2) {
+        coords_list = [[0, 1]]
+        coords_list.push([0, 2])
+        coords_list.push([0, 3])
+        coords_list.push([1, 3])
+        coords_list.push([2, 1])
+        coords_list.push([2, 2])
+        coords_list.push([2, 3])
+        coords_list.push([3, 1])
+        coords_list.push([4, 1])
+        coords_list.push([4, 2])
+        coords_list.push([4, 3])
+    } else if (num == 3) {
+        coords_list = [[0, 1]]
+        coords_list.push([0, 2])
+        coords_list.push([0, 3])
+        coords_list.push([1, 3])
+        coords_list.push([2, 1])
+        coords_list.push([2, 2])
+        coords_list.push([2, 3])
+        coords_list.push([3, 3])
+        coords_list.push([4, 1])
+        coords_list.push([4, 2])
+        coords_list.push([4, 3])
+    } else if (num == 4) {
+        coords_list = [[0, 1]]
+        coords_list.push([0, 3])
+        coords_list.push([1, 1])
+        coords_list.push([1, 3])
+        coords_list.push([2, 1])
+        coords_list.push([2, 2])
+        coords_list.push([2, 3])
+        coords_list.push([3, 3])
+        coords_list.push([4, 3])
+    } else if (num == 5) {
+        coords_list = [[0, 1]]
+        coords_list.push([0, 2])
+        coords_list.push([0, 3])
+        coords_list.push([1, 1])
+        coords_list.push([2, 1])
+        coords_list.push([2, 2])
+        coords_list.push([2, 3])
+        coords_list.push([3, 3])
+        coords_list.push([4, 1])
+        coords_list.push([4, 2])
+        coords_list.push([4, 3])
+    } else if (num == 6) {
+        coords_list = [[0, 1]]
+        coords_list.push([0, 2])
+        coords_list.push([0, 3])
+        coords_list.push([1, 1])
+        coords_list.push([2, 1])
+        coords_list.push([2, 2])
+        coords_list.push([2, 3])
+        coords_list.push([3, 1])
+        coords_list.push([3, 3])
+        coords_list.push([4, 1])
+        coords_list.push([4, 2])
+        coords_list.push([4, 3])
+    } else if (num == 7) {
+        coords_list = [[0, 1]]
+        coords_list.push([0, 2])
+        coords_list.push([0, 3])
+        coords_list.push([1, 3])
+        coords_list.push([2, 3])
+        coords_list.push([3, 3])
+        coords_list.push([4, 3])
+    } else if (num == 8) {
+        coords_list = [[0, 1]]
+        coords_list.push([0, 2])
+        coords_list.push([0, 3])
+        coords_list.push([1, 1])
+        coords_list.push([1, 3])
+        coords_list.push([2, 1])
+        coords_list.push([2, 2])
+        coords_list.push([2, 3])
+        coords_list.push([3, 1])
+        coords_list.push([3, 3])
+        coords_list.push([4, 1])
+        coords_list.push([4, 2])
+        coords_list.push([4, 3])
+    } else if (num == 9) {
+        coords_list = [[0, 1]]
+        coords_list.push([0, 2])
+        coords_list.push([0, 3])
+        coords_list.push([1, 1])
+        coords_list.push([1, 3])
+        coords_list.push([2, 0])
+        coords_list.push([2, 1])
+        coords_list.push([2, 3])
+        coords_list.push([3, 1])
+        coords_list.push([3, 3])
+        coords_list.push([4, 1])
+        coords_list.push([4, 2])
+        coords_list.push([4, 3])
+    }
+    coords_row_0 = coords_list[0]
+    coords_row_1 = coords_list[1]
+    coords_row_2 = coords_list[2]
+    coords_row_3 = coords_list[3]
+    coords_row_4 = coords_list[4]
+    if (upside_down == 1) {
+        coords_row_0.reverse()
+        coords_row_1.reverse()
+        coords_row_2.reverse()
+        coords_row_3.reverse()
+        coords_row_4.reverse()
+        coords_list = [
+        coords_row_4,
+        coords_row_3,
+        coords_row_2,
+        coords_row_1,
+        coords_row_0
+        ]
+    }
+    if (quadrant == 1 || quadrant == 4) {
+        for (let value4 of coords_list) {
+            value4[0] = value4[0] + 5
+        }
+    }
+    if (quadrant == 3 || quadrant == 4) {
+        for (let value5 of coords_list) {
+            value5[1] = value5[1] + 5
+        }
+    }
+    return coords_list
 }
 input.onButtonPressed(Button.A, function () {
     if (mode == ingame) {
@@ -315,7 +475,6 @@ let READY = false
 let START = false
 let next_y = 0
 let next_x = 0
-let tmp_update_displays_list: string[] = []
 let tmp_quadrant_four_coordinates: string[] = []
 let tmp_quadrant_three_coordinates: string[] = []
 let tmp_quadrant_two_coordinates: string[] = []
@@ -331,6 +490,13 @@ let ball_v_y = 0
 let ball_v_x = 0
 let ball_pos_y = 0
 let ball_pos_x = 0
+let coords_row_4: number[] = []
+let coords_row_3: number[] = []
+let coords_row_2: number[] = []
+let coords_row_1: number[] = []
+let coords_row_0: number[] = []
+let coords_list: number[][] = []
+let tmp_update_displays_list: string[] = []
 let top_paddle_pos_y = 0
 let top_paddle_right_pos_x = 0
 let top_paddle_mid_pos_x = 0
@@ -354,6 +520,7 @@ let xcoordinate = 0
 let pairing = 0
 let mode = 0
 let my_id = 0
+let coords_row_5: number[] = []
 radio.setGroup(145)
 my_id = 0
 init_misc()
