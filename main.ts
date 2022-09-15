@@ -35,9 +35,21 @@ radio.onReceivedNumber(function (receivedNumber) {
     }
 })
 function move_paddle_bottom (num: number) {
-    bottom_paddle_left_pos_x = bottom_paddle_left_pos_x + num
-    bottom_paddle_mid_pos_x = bottom_paddle_mid_pos_x + num
-    bottom_paddle_right_pos_x = bottom_paddle_right_pos_x + num
+    if (bottom_paddle_left_pos_x < 7) {
+        if (bottom_paddle_left_pos_x > 0) {
+            bottom_paddle_left_pos_x = bottom_paddle_left_pos_x + num
+        }
+    }
+    if (bottom_paddle_mid_pos_x < 8) {
+        if (bottom_paddle_mid_pos_x > 1) {
+            bottom_paddle_mid_pos_x = bottom_paddle_mid_pos_x + num
+        }
+    }
+    if (bottom_paddle_right_pos_x < 9) {
+        if (bottom_paddle_right_pos_x > 2) {
+            bottom_paddle_right_pos_x = bottom_paddle_right_pos_x + num
+        }
+    }
     update_displays()
 }
 function init_ids () {
@@ -77,10 +89,22 @@ function make_ball () {
     ball_v_y = randint(0, 1) * 2 - 1
 }
 function move_paddle_top (num: number) {
-    top_paddle_left_pos_x = top_paddle_left_pos_x + num
-    top_paddle_mid_pos_x = top_paddle_mid_pos_x + num
-    top_paddle_right_pos_x = top_paddle_right_pos_x + num
-    update_displays()
+    if (top_paddle_left_pos_x < 7) {
+        if (top_paddle_left_pos_x > 0) {
+            top_paddle_left_pos_x = top_paddle_left_pos_x + num
+        }
+    }
+    if (top_paddle_mid_pos_x < 8) {
+        if (top_paddle_mid_pos_x > 1) {
+            top_paddle_mid_pos_x = top_paddle_mid_pos_x + num
+        }
+    }
+    if (bottom_paddle_right_pos_x < 9) {
+        if (bottom_paddle_right_pos_x > 2) {
+            bottom_paddle_right_pos_x = bottom_paddle_right_pos_x + num
+        }
+        update_displays()
+    }
 }
 function collect_position_coordinates () {
     tmp_list_of_coords = [
@@ -191,8 +215,8 @@ function sort_coords_into_quadrants (list_of_coords: number[][]) {
 }
 function update_displays () {
     tmp_update_displays_list = sort_coords_into_quadrants(collect_position_coordinates())
-    for (let value of tmp_update_displays_list) {
-        radio.sendString("" + (value))
+    for (let value3 of tmp_update_displays_list) {
+        radio.sendString("" + (value3))
     }
 }
 function check_move () {
