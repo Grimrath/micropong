@@ -61,7 +61,7 @@ function init_ids () {
     display_3 = 3
     display_4 = 4
 }
-function combine_lists (list1: number[], list2: number[]) {
+function combine_lists (list1: number[][], list2: number[][]) {
     for (let value6 of list2) {
         list1.push(value6)
     }
@@ -464,8 +464,12 @@ function check_move () {
             ball_v_y = -1
         }
     }
-    if (ball_pos_y == 0 || ball_pos_y == 9) {
-        ball_v_y = ball_v_y * -1
+    if (ball_pos_y == 0) {
+        player_2_score += 1
+        draw_scores()
+    } else if (ball_pos_y == 9) {
+        player_1_score += 1
+        draw_scores()
     }
     if (ball_v_x == 2) {
         ball_v_x = 1
@@ -473,6 +477,13 @@ function check_move () {
     if (ball_v_x == -2) {
         ball_v_x = -1
     }
+}
+function draw_scores () {
+    all_score_coords = number_to_coords(player_1_score, 3, 0)
+    all_score_coords = combine_lists(all_score_coords, number_to_coords(player_2_score, 4, 0))
+    all_score_coords = combine_lists(all_score_coords, number_to_coords(player_1_score, 1, 1))
+    all_score_coords = combine_lists(all_score_coords, number_to_coords(player_2_score, 2, 1))
+    draw_coords(all_score_coords)
 }
 function move_ball () {
     check_move()
@@ -487,6 +498,9 @@ function make_Ready () {
     }
 }
 let START = false
+let all_score_coords: number[][] = []
+let player_1_score = 0
+let player_2_score = 0
 let next_y = 0
 let next_x = 0
 let tmp_quadrant_four_coordinates: string[] = []
